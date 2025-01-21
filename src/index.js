@@ -27,7 +27,15 @@ function createTodoElement(todo, index) {
   // Créer le bouton "Supprimer"
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Supprimer";
-  deleteButton.addEventListener("click", () => deleteTodo(index)); // Gestionnaire d'événement
+
+  // Empêcher la propagation de l'événement clic
+  deleteButton.addEventListener("click", (event) => {
+    event.stopPropagation(); // Empêche l'exécution du gestionnaire du <li>
+    deleteTodo(index); // Supprime la tâche
+  });
+  
+  // Ajouter un gestionnaire d'événement pour le clic sur <li>
+  li.addEventListener("click", () => toggleTodo(index)); // Inverse "done" au clic
 
   // Ajouter les éléments au <li>
   li.appendChild(span);
@@ -59,6 +67,12 @@ function addTodo(text) {
 function deleteTodo(index) {
     todos.splice(index, 1); // Supprime 1 élément à l'index donné
     displayTodo(); // Réaffiche les todos
+  }
+  
+  // Fonction pour inverser le statut d'une tâche
+  function toggleTodo(index) {
+    todos[index].done = !todos[index].done; // Inverse la valeur de "done"
+    displayTodo(); // Réaffiche les todos pour refléter les changements
   }
   
 
